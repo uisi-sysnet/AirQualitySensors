@@ -3,58 +3,20 @@ import threading
 
 from parser import process_frame
 
+from hj212 import (
+    extract_frames,
+    build_ack,
+    get_field,
+    verify_crc,
+)
+
 from config import (
     SERVER_HOST,
     SERVER_PORT,
     BUFFER_SIZE,
     MAX_CONNECTIONS,
+    SUPPORTED_CN,
 )
-
-
-# ==========================================================
-# ACK RESPONSE
-# ==========================================================
-def build_ack():
-    """
-    Generic HJ212 ACK.
-    Later we'll improve this to generate a proper QN-specific ACK.
-    """
-    return "##0006QN=ACK;CN=9014;ST=91;CP=&&QnRtn=1&&FFFF"
-
-
-# ==========================================================
-# FRAME EXTRACTOR
-# ==========================================================
-def extract_frames(buffer: str):
-    """
-    Extract complete HJ212 frames from a TCP stream.
-
-    Returns:
-        frames
-        remaining_buffer
-    """
-
-    frames = []
-
-    while True:
-
-        start = buffer.find("##")
-
-        if start == -1:
-            break
-
-        next_start = buffer.find("##", start + 2)
-
-        if next_start == -1:
-            break
-
-        frame = buffer[start:next_start]
-
-        frames.append(frame.strip())
-
-        buffer = buffer[next_start:]
-
-    return frames, buffer
 
 
 # ==========================================================
@@ -83,23 +45,54 @@ def handle_client(conn, addr):
 
             for frame in frames:
 
-                parsed = process_frame(frame, ip_address)
+                print(f"\n[RX] {frame}")
 
-                # Device requests ACK
-                if "CN=9011" in frame or "CN=9012" in frame:
-                    conn.sendall(build_ack().encode())
+                # --------------------------------------------------
+                # Verify CRC
+                # --------------------------------------------------
+                if not verify_crc(frame):
+                    print(f"[CRC ERROR] Invalid CRC from {ip_address}")
+                    continue
+
+                # --------------------------------------------------
+                # Get Command Number
+                # --------------------------------------------------
+                cn = get_field(frame, "CN")
+
+                # --------------------------------------------------
+                # Parse and Save
+                # --------------------------------------------------
+                try:
+                    process_frame(frame, ip_address)
+                except Exception as e:
+                    print(f"[PARSER ERROR] {e}")
+
+                # --------------------------------------------------
+                # Send ACK
+                # --------------------------------------------------
+                if cn in SUPPORTED_CN:
+
+                    ack = build_ack(frame)
+
+                    conn.sendall(ack.encode())
+
+                    print(f"[TX] {ack.strip()}")
+
+        except socket.timeout:
+            print(f"[TIMEOUT] {ip_address}")
+            break
 
         except ConnectionResetError:
-            print(f"[!] Connection reset by {ip_address}")
+            print(f"[RESET] {ip_address}")
             break
 
         except Exception as e:
-            print(f"[ERROR] {e}")
+            print(f"[ERROR] {ip_address}: {e}")
             break
 
     conn.close()
 
-    print(f"[-] Device Disconnected : {addr}")
+    print(f"[-] Device Disconnected : {ip_address}")
 
 
 # ==========================================================
@@ -125,10 +118,13 @@ def start_server():
 
         conn, addr = server.accept()
 
+        conn.settimeout(60)
+
         thread = threading.Thread(
             target=handle_client,
             args=(conn, addr),
-            daemon=True
+            daemon=True,
+            name=f"HJ212-{addr[0]}"
         )
 
         thread.start()
@@ -138,4 +134,9 @@ def start_server():
 # MAIN
 # ==========================================================
 if __name__ == "__main__":
-    start_server()
+
+    try:
+        start_server()
+
+    except KeyboardInterrupt:
+        print("\nServer stopped.")
