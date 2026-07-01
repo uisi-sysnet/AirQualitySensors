@@ -1,0 +1,9 @@
+2026-07-01 10:25:55,083 [INFO] MainThread: Checking database 'air_quality'...
+2026-07-01 10:25:55,121 [INFO] MainThread: Database 'air_quality' already exists.
+2026-07-01 10:25:55,180 [INFO] MainThread: Connected to PostgreSQL successfully.
+2026-07-01 10:25:55,181 [INFO] MainThread: Database schemas and indexes checked.
+2026-07-01 10:25:55,182 [INFO] ModbusLeadService: Background Modbus loop scheduler active.
+2026-07-01 10:25:55,182 [INFO] MainThread: HJ212 SERVER BOUND AND ONLINE. Listening on: 0.0.0.0:1935
+2026-07-01 10:25:55,288 [INFO] ModbusLeadService: [MODBUS DATA] 4101025U122041 (192.168.55.11) -> Lead: 0.10 ppm, Temp: 25.0°C
+2026-07-01 10:25:55,302 [INFO] ModbusLeadService: Lead variables updated in Database for station: 4101025U122041
+2026-07-01 10:25:55,337 [INFO] HJ212-192.168.55.6: [+] Active socket tunnel established with client: 192.168.55.6

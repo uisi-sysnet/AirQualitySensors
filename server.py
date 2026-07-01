@@ -3,6 +3,8 @@ import threading
 
 from parser import process_frame
 
+from database import initialize_database
+
 from hj212 import (
     extract_frames,
     build_ack,
@@ -16,8 +18,10 @@ from config import (
     BUFFER_SIZE,
     MAX_CONNECTIONS,
     SUPPORTED_CN,
+    VERIFY_CHECKSUM,
 )
 
+from lead_sensor import start_lead_service
 
 # ==========================================================
 # CLIENT THREAD
@@ -50,9 +54,11 @@ def handle_client(conn, addr):
                 # --------------------------------------------------
                 # Verify CRC
                 # --------------------------------------------------
-                if not verify_crc(frame):
-                    print(f"[CRC ERROR] Invalid CRC from {ip_address}")
-                    continue
+                if VERIFY_CHECKSUM:
+                    
+                    if not verify_crc(frame):
+                        print(f"[CRC ERROR] Invalid CRC from {ip_address}")
+                        continue
 
                 # --------------------------------------------------
                 # Get Command Number
@@ -62,10 +68,16 @@ def handle_client(conn, addr):
                 # --------------------------------------------------
                 # Parse and Save
                 # --------------------------------------------------
-                try:
-                    process_frame(frame, ip_address)
-                except Exception as e:
-                    print(f"[PARSER ERROR] {e}")
+                # Only save measurement data
+                if cn == "2011":
+
+                    try:
+                        process_frame(frame, ip_address)
+                    except Exception as e:
+                        print(f"[PARSER ERROR] {e}")
+
+                else:
+                    print(f"[INFO] CN={cn} received (not stored)")
 
                 # --------------------------------------------------
                 # Send ACK
@@ -135,8 +147,9 @@ def start_server():
 # ==========================================================
 if __name__ == "__main__":
 
-    try:
+    if initialize_database():
+        start_lead_service()
         start_server()
 
-    except KeyboardInterrupt:
-        print("\nServer stopped.")
+    else:
+         print("Database initialization failed.")

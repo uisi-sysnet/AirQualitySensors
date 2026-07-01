@@ -1,0 +1,75 @@
+2026-07-01 10:23:20,152 [INFO] MainThread: Checking database 'air_quality'...
+2026-07-01 10:23:20,194 [INFO] MainThread: Database 'air_quality' already exists.
+2026-07-01 10:23:20,380 [INFO] MainThread: Connected to PostgreSQL successfully.
+2026-07-01 10:23:20,381 [INFO] MainThread: Database schemas and indexes checked.
+2026-07-01 10:23:20,382 [INFO] ModbusLeadService: Background Modbus loop scheduler active.
+2026-07-01 10:23:20,382 [INFO] MainThread: HJ212 SERVER BOUND AND ONLINE. Listening on: 0.0.0.0:1935
+2026-07-01 10:23:20,480 [INFO] ModbusLeadService: [MODBUS DATA] 4101025U122041 (192.168.55.11) -> Lead: 0.10 ppm, Temp: 25.0°C
+2026-07-01 10:23:20,500 [INFO] ModbusLeadService: Lead variables updated in Database for station: 4101025U122041
+2026-07-01 10:23:20,517 [INFO] HJ212-192.168.55.6: [+] Active socket tunnel established with client: 192.168.55.6
+2026-07-01 10:23:20,518 [INFO] HJ212-192.168.55.6: [RAW INBOUND PACKET] Received data: ##0511QN=20260701102318561;ST=31;CN=2011;PW=123456;MN=4101025U122041;Flag=9;CP=&&DataTime=20260701102300;a34004-Rtd=7.0,a34004-Flag=N;a34002-Rtd=9.0,a34002-Flag=N;a34001-Rtd=10.0,a34001-Flag=N;a05024-Rtd=42.0,a05024-Flag=N;a21005-Rtd=0.469,a21005-Flag=N;a21026-Rtd=1.0,a21026-Flag=N;a21004-Rtd=6.0,a21004-Flag=N;a01001-Rtd=31.2,a01001-Flag=N;a01002-Rtd=76.3,a01002-Flag=N;a06001-Rtd=0.0,a06001-Flag=N;LA-Rtd=54.7,LA-Flag=N;a01007-Rtd=0.89,a01007-Flag=N;a01008-Rtd=268.0,a01008-Flag=N;a01006-Rtd=100.76,a01006-Flag=N&&12C0
+2026-07-01 10:23:20,521 [INFO] HJ212-192.168.55.6: Parsed fields -> QN: 20260701102318561, CN: 2011, MN: 4101025U122041
+2026-07-01 10:23:20,521 [INFO] HJ212-192.168.55.6: --- Metric Metric: PM2.5 -> 7.0
+2026-07-01 10:23:20,523 [INFO] HJ212-192.168.55.6: --- Metric Metric: PM10 -> 9.0
+2026-07-01 10:23:20,524 [INFO] HJ212-192.168.55.6: --- Metric Metric: TSP -> 10.0
+2026-07-01 10:23:20,525 [INFO] HJ212-192.168.55.6: --- Metric Metric: Ozone -> 42.0
+2026-07-01 10:23:20,527 [INFO] HJ212-192.168.55.6: --- Metric Metric: Carbon Monoxide -> 0.469
+2026-07-01 10:23:20,529 [INFO] HJ212-192.168.55.6: --- Metric Metric: Sulfur Dioxide -> 1.0
+2026-07-01 10:23:20,529 [INFO] HJ212-192.168.55.6: --- Metric Metric: Nitrogen Dioxide -> 6.0
+2026-07-01 10:23:20,530 [INFO] HJ212-192.168.55.6: --- Metric Metric: Temperature -> 31.2
+2026-07-01 10:23:20,531 [INFO] HJ212-192.168.55.6: --- Metric Metric: Humidity -> 76.3
+2026-07-01 10:23:20,531 [INFO] HJ212-192.168.55.6: --- Metric Metric: Rain -> None
+2026-07-01 10:23:20,533 [INFO] HJ212-192.168.55.6: --- Metric Metric: Noise -> 54.7
+2026-07-01 10:23:20,535 [INFO] HJ212-192.168.55.6: --- Metric Metric: Wind Speed -> 0.89
+2026-07-01 10:23:20,535 [INFO] HJ212-192.168.55.6: --- Metric Metric: Wind Direction -> 268.0
+2026-07-01 10:23:20,536 [INFO] HJ212-192.168.55.6: --- Metric Metric: Air Pressure -> 100.76
+2026-07-01 10:23:20,558 [INFO] HJ212-192.168.55.6: Successfully stored database records for station 4101025U122041 (192.168.55.6)
+2026-07-01 10:23:20,559 [INFO] HJ212-192.168.55.6: [ACK TRANSMITTED] Handshake context feedback: ##0093QN=20260701102318561;ST=91;CN=9014;PW=123456;MN=4101025U122041;Flag=4;CP=&&QnRtn=1;ExeRtn=1&&845F
+2026-07-01 10:23:23,504 [WARNING] ModbusLeadService: [MODBUS WORKER] Unable to reach Modbus gateway at: 192.168.55.12
+2026-07-01 10:23:53,598 [INFO] ModbusLeadService: [MODBUS DATA] 4101025U122041 (192.168.55.11) -> Lead: 0.10 ppm, Temp: 25.0°C
+2026-07-01 10:23:53,599 [INFO] ModbusLeadService: Lead variables updated in Database for station: 4101025U122041
+2026-07-01 10:23:56,601 [WARNING] ModbusLeadService: [MODBUS WORKER] Unable to reach Modbus gateway at: 192.168.55.12
+2026-07-01 10:24:06,178 [INFO] HJ212-192.168.55.6: [RAW INBOUND PACKET] Received data: ##0511QN=20260701102406562;ST=31;CN=2011;PW=123456;MN=4101025U122041;Flag=9;CP=&&DataTime=20260701102400;a34004-Rtd=7.0,a34004-Flag=N;a34002-Rtd=9.0,a34002-Flag=N;a34001-Rtd=11.0,a34001-Flag=N;a05024-Rtd=42.0,a05024-Flag=N;a21005-Rtd=0.469,a21005-Flag=N;a21026-Rtd=1.0,a21026-Flag=N;a21004-Rtd=6.0,a21004-Flag=N;a01001-Rtd=31.2,a01001-Flag=N;a01002-Rtd=76.1,a01002-Flag=N;a06001-Rtd=0.0,a06001-Flag=N;LA-Rtd=58.4,LA-Flag=N;a01007-Rtd=0.82,a01007-Flag=N;a01008-Rtd=271.0,a01008-Flag=N;a01006-Rtd=100.76,a01006-Flag=N&&E2C1
+2026-07-01 10:24:06,178 [INFO] HJ212-192.168.55.6: Parsed fields -> QN: 20260701102406562, CN: 2011, MN: 4101025U122041
+2026-07-01 10:24:06,178 [INFO] HJ212-192.168.55.6: --- Metric Metric: PM2.5 -> 7.0
+2026-07-01 10:24:06,179 [INFO] HJ212-192.168.55.6: --- Metric Metric: PM10 -> 9.0
+2026-07-01 10:24:06,179 [INFO] HJ212-192.168.55.6: --- Metric Metric: TSP -> 11.0
+2026-07-01 10:24:06,180 [INFO] HJ212-192.168.55.6: --- Metric Metric: Ozone -> 42.0
+2026-07-01 10:24:06,180 [INFO] HJ212-192.168.55.6: --- Metric Metric: Carbon Monoxide -> 0.469
+2026-07-01 10:24:06,181 [INFO] HJ212-192.168.55.6: --- Metric Metric: Sulfur Dioxide -> 1.0
+2026-07-01 10:24:06,181 [INFO] HJ212-192.168.55.6: --- Metric Metric: Nitrogen Dioxide -> 6.0
+2026-07-01 10:24:06,181 [INFO] HJ212-192.168.55.6: --- Metric Metric: Temperature -> 31.2
+2026-07-01 10:24:06,181 [INFO] HJ212-192.168.55.6: --- Metric Metric: Humidity -> 76.1
+2026-07-01 10:24:06,182 [INFO] HJ212-192.168.55.6: --- Metric Metric: Rain -> None
+2026-07-01 10:24:06,182 [INFO] HJ212-192.168.55.6: --- Metric Metric: Noise -> 58.4
+2026-07-01 10:24:06,182 [INFO] HJ212-192.168.55.6: --- Metric Metric: Wind Speed -> 0.82
+2026-07-01 10:24:06,182 [INFO] HJ212-192.168.55.6: --- Metric Metric: Wind Direction -> 271.0
+2026-07-01 10:24:06,183 [INFO] HJ212-192.168.55.6: --- Metric Metric: Air Pressure -> 100.76
+2026-07-01 10:24:06,185 [INFO] HJ212-192.168.55.6: Successfully stored database records for station 4101025U122041 (192.168.55.6)
+2026-07-01 10:24:06,186 [INFO] HJ212-192.168.55.6: [ACK TRANSMITTED] Handshake context feedback: ##0093QN=20260701102406562;ST=91;CN=9014;PW=123456;MN=4101025U122041;Flag=4;CP=&&QnRtn=1;ExeRtn=1&&1C74
+2026-07-01 10:24:26,697 [INFO] ModbusLeadService: [MODBUS DATA] 4101025U122041 (192.168.55.11) -> Lead: 0.10 ppm, Temp: 25.0°C
+2026-07-01 10:24:26,701 [INFO] ModbusLeadService: Lead variables updated in Database for station: 4101025U122041
+2026-07-01 10:24:29,705 [WARNING] ModbusLeadService: [MODBUS WORKER] Unable to reach Modbus gateway at: 192.168.55.12
+2026-07-01 10:24:59,810 [INFO] ModbusLeadService: [MODBUS DATA] 4101025U122041 (192.168.55.11) -> Lead: 0.10 ppm, Temp: 25.0°C
+2026-07-01 10:24:59,814 [INFO] ModbusLeadService: Lead variables updated in Database for station: 4101025U122041
+2026-07-01 10:25:02,815 [WARNING] ModbusLeadService: [MODBUS WORKER] Unable to reach Modbus gateway at: 192.168.55.12
+2026-07-01 10:25:03,894 [INFO] HJ212-192.168.55.6: [RAW INBOUND PACKET] Received data: ##0512QN=20260701102504563;ST=31;CN=2011;PW=123456;MN=4101025U122041;Flag=9;CP=&&DataTime=20260701102500;a34004-Rtd=7.0,a34004-Flag=N;a34002-Rtd=10.0,a34002-Flag=N;a34001-Rtd=12.0,a34001-Flag=N;a05024-Rtd=42.0,a05024-Flag=N;a21005-Rtd=0.469,a21005-Flag=N;a21026-Rtd=1.0,a21026-Flag=N;a21004-Rtd=6.0,a21004-Flag=N;a01001-Rtd=31.2,a01001-Flag=N;a01002-Rtd=75.7,a01002-Flag=N;a06001-Rtd=0.0,a06001-Flag=N;LA-Rtd=58.4,LA-Flag=N;a01007-Rtd=0.73,a01007-Flag=N;a01008-Rtd=267.0,a01008-Flag=N;a01006-Rtd=100.76,a01006-Flag=N&&59C0
+2026-07-01 10:25:03,894 [INFO] HJ212-192.168.55.6: Parsed fields -> QN: 20260701102504563, CN: 2011, MN: 4101025U122041
+2026-07-01 10:25:03,895 [INFO] HJ212-192.168.55.6: --- Metric Metric: PM2.5 -> 7.0
+2026-07-01 10:25:03,895 [INFO] HJ212-192.168.55.6: --- Metric Metric: PM10 -> 10.0
+2026-07-01 10:25:03,895 [INFO] HJ212-192.168.55.6: --- Metric Metric: TSP -> 12.0
+2026-07-01 10:25:03,896 [INFO] HJ212-192.168.55.6: --- Metric Metric: Ozone -> 42.0
+2026-07-01 10:25:03,896 [INFO] HJ212-192.168.55.6: --- Metric Metric: Carbon Monoxide -> 0.469
+2026-07-01 10:25:03,897 [INFO] HJ212-192.168.55.6: --- Metric Metric: Sulfur Dioxide -> 1.0
+2026-07-01 10:25:03,897 [INFO] HJ212-192.168.55.6: --- Metric Metric: Nitrogen Dioxide -> 6.0
+2026-07-01 10:25:03,898 [INFO] HJ212-192.168.55.6: --- Metric Metric: Temperature -> 31.2
+2026-07-01 10:25:03,898 [INFO] HJ212-192.168.55.6: --- Metric Metric: Humidity -> 75.7
+2026-07-01 10:25:03,898 [INFO] HJ212-192.168.55.6: --- Metric Metric: Rain -> None
+2026-07-01 10:25:03,899 [INFO] HJ212-192.168.55.6: --- Metric Metric: Noise -> 58.4
+2026-07-01 10:25:03,900 [INFO] HJ212-192.168.55.6: --- Metric Metric: Wind Speed -> 0.73
+2026-07-01 10:25:03,901 [INFO] HJ212-192.168.55.6: --- Metric Metric: Wind Direction -> 267.0
+2026-07-01 10:25:03,902 [INFO] HJ212-192.168.55.6: --- Metric Metric: Air Pressure -> 100.76
+2026-07-01 10:25:03,905 [INFO] HJ212-192.168.55.6: Successfully stored database records for station 4101025U122041 (192.168.55.6)
+2026-07-01 10:25:03,906 [INFO] HJ212-192.168.55.6: [ACK TRANSMITTED] Handshake context feedback: ##0093QN=20260701102504563;ST=91;CN=9014;PW=123456;MN=4101025U122041;Flag=4;CP=&&QnRtn=1;ExeRtn=1&&0356
+2026-07-01 10:25:32,926 [INFO] ModbusLeadService: [MODBUS DATA] 4101025U122041 (192.168.55.11) -> Lead: 0.10 ppm, Temp: 25.0°C
+2026-07-01 10:25:32,928 [INFO] ModbusLeadService: Lead variables updated in Database for station: 4101025U122041

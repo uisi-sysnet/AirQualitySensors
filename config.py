@@ -20,8 +20,8 @@ MAX_CONNECTIONS = 20
 DB_HOST = "127.0.0.1"
 DB_PORT = 5432
 DB_NAME = "air_quality"
-DB_USER = "postgres"
-DB_PASSWORD = "your_password"
+DB_USER = "aq_user"
+DB_PASSWORD = "UisI_2026##"
 
 # ==========================================================
 # LOGGING
@@ -35,7 +35,7 @@ LOG_DIRECTORY = "logs"
 # ==========================================================
 AUTO_ACK = True
 VERIFY_CHECKSUM = False     # Enable later after CRC implementation
-ALLOW_UNKNOWN_DEVICES = False
+ALLOW_UNKNOWN_DEVICES = True
 
 # ==========================================================
 # TIMEZONE
@@ -62,3 +62,24 @@ SUPPORTED_CN = [
     "9012",   # Execution ACK
     "9014",   # Data ACK
 ]
+
+# ==========================================================
+# LEAD SENSOR
+# ==========================================================
+LEAD_POLL_INTERVAL = 30
+
+# ==========================================================
+# STATION REGISTRY
+# ==========================================================
+
+STATIONS = {
+
+    "4101025U122041": {
+        "station_name": "Station 1",
+        "lead_ip": "192.168.55.11",
+        "lead_port": 8899,
+        "lead_slave": 1,
+        "enabled": True,
+    }
+
+}
