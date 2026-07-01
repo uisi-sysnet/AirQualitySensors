@@ -1,7 +1,35 @@
 #!/usr/bin/env python3
 """
-HJ212 & Modbus Air Quality Data Collection Server (Unified Production Script)
-Features File Logging & Multi-Device Scalability Support
+Air Quality Monitoring Server v3.0
+Version: 3.0
+Date: 2026-06-15
+Developer: System & Network Department - Uplink integrated Solutions Inc @ 2026
+
+
+Protocol: 
+ - HJ212 (Chinese Environmental Monitoring Standard)
+ - Modbus TCP (Lead Sensor Polling)
+
+Features:
+ - TCP Server for HJ212 Telemetry Data
+ - PostgreSQL Database Storage with Connection Pooling
+ - Background Modbus Polling Service for Lead Sensor
+ - Dual Logging to Console and File
+ - CRC16 Checksum Verification for HJ212 Frames
+ - Thread-Safe Cache for Latest Lead Sensor Readings
+ - Modular Design for Easy Maintenance and Extension
+
+New in v3.0:
+ - Added Modbus Lead Sensor Polling Service
+ - Added PostgreSQL Database Connection Pooling
+ - Added logging to both console and file 
+ - Added CRC16 checksum verification for HJ212 frames
+
+
+ Intructions:
+    1. Configure the database connection parameters in the config section.
+    2. Add your HJ212 stations (Dahua AQM Devices) in the STATIONS dictionary with their respective lead sensor IPs and ports.
+    3. Run the server script. It will listen for incoming HJ212 (Dahua AQM Devices) telemetry data and poll the lead sensors in the background.
 """
 
 import datetime
@@ -20,15 +48,15 @@ from pymodbus.client import ModbusTcpClient
 from pymodbus.framer import FramerType
 
 # ==========================================================
-# 1. CONFIGURATION (Formerly config.py)
+# CONFIGURATION 
 # ==========================================================
 SERVER_HOST = "0.0.0.0"
 SERVER_PORT = 1935
 BUFFER_SIZE = 4096
 MAX_CONNECTIONS = 20
-VERIFY_CHECKSUM = False  # Set to True once CRC validation is required
-SUPPORTED_CN = ["2011", "9014"]  # Core command numbers that trigger an ACK
-LEAD_POLL_INTERVAL = 30          # Modbus polling loop timer in seconds
+VERIFY_CHECKSUM = False             # Set to True once CRC validation is required
+SUPPORTED_CN = ["2011", "9014"]     # Core command numbers that trigger an ACK
+LEAD_POLL_INTERVAL = 30             # Modbus polling loop timer in seconds
 
 # File Logging Config
 LOG_FILE_NAME = "hj212_server.log"
@@ -42,12 +70,12 @@ DB_PASSWORD = "UisI_2026##"
 
 # Registered Station Records (Add as many devices as you need here)
 STATIONS = {
-    "4101025U122041": {
-        "station_name": "Station 1",
-        "enabled": True,
-        "lead_ip": "192.168.55.11",
-        "lead_port": 8899,
-        "lead_slave": 1,
+    "4101025U122041": {                 # Unique MN identifier for the station (check on the Dahua AQM device)
+        "station_name": "Station 1",    # Human-readable name for the station
+        "enabled": True,                # Flag to enable/disable lead sensor polling for this station
+        "lead_ip": "192.168.55.11",     # IP address of the Modbus lead sensor for this station (check this on the RS485 to Ethernet gateway device)
+        "lead_port": 8899,              # Port number of the Modbus lead sensor for this station (default is 8899)
+        "lead_slave": 1,                # Modbus slave ID for the lead sensor (default is 1)
     },
     "4101025U122042": {
         "station_name": "Station 2",
@@ -76,7 +104,7 @@ logger.addHandler(file_handler)
 
 
 # ==========================================================
-# 2. SENSOR DEFINITIONS & UTILITIES (Formerly sensors.py)
+# SENSOR DEFINITIONS & UTILITIES 
 # ==========================================================
 SENSORS = {
     "a34004": {"name": "PM2.5", "column": "pm25", "unit": "µg/m³"},
@@ -114,7 +142,7 @@ def get_unit(code):
 
 
 # ==========================================================
-# 3. STATION REGISTRY HELPERS (Formerly station.py)
+# STATION REGISTRY HELPERS 
 # ==========================================================
 def get_station(mn):
     return STATIONS.get(mn)
@@ -129,7 +157,7 @@ def get_slave(mn):
 
 
 # ==========================================================
-# 4. DATABASE LAYER (Formerly database.py)
+# DATABASE LAYER
 # ==========================================================
 _connection_pool = None
 _pool_lock = threading.Lock()
@@ -308,7 +336,7 @@ def update_lead_value(mn, lead, temperature):
 
 
 # ==========================================================
-# 5. HJ212 PROTOCOL UTILITIES (Formerly hj212.py)
+# HJ212 PROTOCOL UTILITIES
 # ==========================================================
 def crc16(data: str) -> str:
     crc = 0xFFFF
@@ -366,7 +394,7 @@ def build_ack(frame: str) -> str:
 
 
 # ==========================================================
-# 6. HJ212 FRAME PARSER (Formerly parser.py)
+# HJ212 FRAME PARSER
 # ==========================================================
 def parse_cp(cp_data: str):
     result = {}
@@ -421,7 +449,7 @@ def process_frame(frame, ip_address):
 
 
 # ==========================================================
-# 7. MODBUS LEAD SENSOR SERVICE (Formerly lead_sensor.py)
+# MODBUS LEAD SENSOR SERVICE
 # ==========================================================
 def read_registers(client, address, count, slave):
     try:
@@ -464,7 +492,7 @@ def start_lead_service():
 
 
 # ==========================================================
-# 8. MAIN SOCKET SERVER (Formerly server.py)
+# MAIN SOCKET SERVER
 # ==========================================================
 def handle_client(conn, addr):
     ip_address = addr[0]
