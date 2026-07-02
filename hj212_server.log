@@ -73,3 +73,36 @@
 2026-07-01 10:25:03,906 [INFO] HJ212-192.168.55.6: [ACK TRANSMITTED] Handshake context feedback: ##0093QN=20260701102504563;ST=91;CN=9014;PW=123456;MN=4101025U122041;Flag=4;CP=&&QnRtn=1;ExeRtn=1&&0356
 2026-07-01 10:25:32,926 [INFO] ModbusLeadService: [MODBUS DATA] 4101025U122041 (192.168.55.11) -> Lead: 0.10 ppm, Temp: 25.0°C
 2026-07-01 10:25:32,928 [INFO] ModbusLeadService: Lead variables updated in Database for station: 4101025U122041
+2026-07-01 23:34:53,354 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-01 23:34:53,356 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-01 23:47:09,662 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-01 23:47:09,662 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 00:16:20,221 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-02 00:16:20,222 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 00:19:48,625 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-02 00:19:48,625 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 00:28:09,595 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-02 00:28:09,596 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 00:29:20,726 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-02 00:29:20,727 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 07:42:50,141 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-02 07:42:50,141 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 07:43:20,756 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-02 07:43:20,756 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 07:43:20,763 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: ModbusClientMixin.read_holding_registers() got an unexpected keyword argument 'slave'
+2026-07-02 07:44:49,096 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-02 07:44:49,096 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 07:54:56,711 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-02 07:54:56,711 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 07:54:57,319 [ERROR] Thread-1 (handle_client): Error inserting sensor data: name 'timedelta' is not defined
+2026-07-02 07:54:58,451 [ERROR] Thread-1 (handle_client): Error inserting sensor data: name 'timedelta' is not defined
+2026-07-02 07:54:59,651 [ERROR] Thread-1 (handle_client): Error inserting sensor data: name 'timedelta' is not defined
+2026-07-02 07:55:00,852 [ERROR] Thread-1 (handle_client): Error inserting sensor data: name 'timedelta' is not defined
+2026-07-02 07:55:02,052 [ERROR] Thread-1 (handle_client): Error inserting sensor data: name 'timedelta' is not defined
+2026-07-02 07:55:03,253 [ERROR] Thread-1 (handle_client): Error inserting sensor data: name 'timedelta' is not defined
+2026-07-02 07:55:04,454 [ERROR] Thread-1 (handle_client): Error inserting sensor data: name 'timedelta' is not defined
+2026-07-02 07:55:05,655 [ERROR] Thread-1 (handle_client): Error inserting sensor data: name 'timedelta' is not defined
+2026-07-02 07:55:06,855 [ERROR] Thread-1 (handle_client): Error inserting sensor data: name 'timedelta' is not defined
+2026-07-02 07:55:08,055 [ERROR] Thread-1 (handle_client): Error inserting sensor data: name 'timedelta' is not defined
+2026-07-02 07:56:01,677 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-02 07:56:01,678 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
