@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Air Quality Monitoring Server v3.2 (Patched)
+Air Quality Monitoring Server v3.5
 Protocol: HJ212 & Modbus TCP
-Features: TCP Server, PostgreSQL Pool, Modbus Polling, FastAPI REST API
+Features: TCP Server, PostgreSQL Pool, Modbus Polling, FastAPI REST API, Time-Series Analytics
 """
 
 import logging
@@ -106,6 +106,20 @@ SENSORS = {
 }
 
 SENSOR_MAP = {code: sensor["name"] for code, sensor in SENSORS.items()}
+
+
+# ==========================================================
+# TIME UTILITY FOR API GENERATION
+# ==========================================================
+def format_api_datetime(dt: datetime) -> str:
+    """Formats a datetime to exact millisecond ISO-8601 UTC string: YYYY-MM-DDTHH:MM:SS.mmmZ"""
+    if not dt:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    else:
+        dt = dt.astimezone(timezone.utc)
+    return dt.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
 
 
 # ==========================================================
@@ -216,6 +230,7 @@ def insert_sensor_data(data, ip_address):
         cur = conn.cursor()
         cp = data.get("CP", {})
         mn = data.get("MN")
+        
         data_time = datetime.now(timezone.utc)
 
         if "DataTime" in cp:
@@ -255,7 +270,7 @@ def update_lead_value(mn, lead, temperature):
             UPDATE sensor_data SET lead = %s, lead_temperature = %s
             WHERE id = (
                 SELECT id FROM sensor_data WHERE station_mn = %s
-                ORDER BY data_time DESC NULLS LAST, created_at DESC LIMIT 1
+                ORDER BY data_time DESC LIMIT 1
             )
             """, (lead, temperature, mn))
         conn.commit()
@@ -339,7 +354,7 @@ def process_frame(frame, ip_address):
 
 
 # ==========================================================
-# MODBUS LEAD SENSOR SERVICE (PATCHED)
+# MODBUS LEAD SENSOR SERVICE
 # ==========================================================
 def poll_station(mn, station):
     ip, port, slave = station["lead_ip"], station["lead_port"], station["lead_slave"]
@@ -347,7 +362,6 @@ def poll_station(mn, station):
     if not client.connect(): return
     try:
         rr = None
-        # Polymorphic approach cascading through varying API arguments across pymodbus releases
         try:
             rr = client.read_holding_registers(address=0, count=10, slave=slave)
         except TypeError:
@@ -358,8 +372,6 @@ def poll_station(mn, station):
 
         if rr and not rr.isError():
             update_lead_value(mn, rr.registers[2] / 10.0, rr.registers[1] / 10.0)
-        elif rr and rr.isError():
-            logger.error(f"[MODBUS ERROR] IP {ip} returned error message execution payload context.")
     except Exception as e: 
         logger.error(f"[MODBUS] IP {ip}: {e}")
     finally: 
@@ -412,9 +424,9 @@ def start_tcp_server():
 # FASTAPI APPLICATION
 # ==========================================================
 app = FastAPI(
-    title="Air Quality & Weather Telemetry API", 
-    version="3.2",
-    description="Operational REST endpoints for live telemetry, metadata routing, and historical data logs."
+    title="Air Quality & Weather Monitoring System API", 
+    version="3.5",
+    description="Operational REST endpoints serving live standardized millisecond UTC metrics and historical calculations."
 )
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=True)
 
@@ -423,6 +435,44 @@ def verify_api_key(api_key: str = Security(api_key_header)):
         raise HTTPException(status_code=403, detail="Unauthorized request")
     return api_key
 
+def map_station_row_to_json(row, now):
+    """Reusable helper to cleanly convert a query result into the requested station dictionary format."""
+    status = "offline"
+    last_update_str = None
+    if row['data_time']:
+        last_update_utc = row['data_time'].replace(tzinfo=timezone.utc)
+        last_update_str = format_api_datetime(last_update_utc)
+        if (now - last_update_utc).total_seconds() < 900:
+            status = "online"
+
+    return {
+        "station_mn": row['station_mn'],
+        "friendly_name": row['station_name'], 
+        "location": {
+            "latitude": row['latitude'],
+            "longitude": row['longitude']
+        },
+        "status": status,
+        "last_update": last_update_str,
+        "weather": {
+            "temperature": row['temperature'],
+            "humidity": row['humidity'],
+            "pressure": row['air_pressure']
+        },
+        "pollutants": {
+            "pm2_5": row['pm25'],
+            "pm10": row['pm10'],
+            "co": row['carbon_monoxide'],
+            "co2": None, 
+            "so2": row['sulfur_dioxide'],
+            "no2": row['nitrogen_dioxide'],
+            "o3": row['ozone'],
+            "pb": row['lead'],
+            "pb_temp": row['lead_temperature']
+        }
+    }
+
+# 1. LIVE LATEST: ALL STATIONS
 @app.get("/api/v1/stations/latest", tags=["Live Monitoring"])
 def get_latest_data(api_key: str = Depends(verify_api_key)):
     conn = get_connection()
@@ -443,45 +493,11 @@ def get_latest_data(api_key: str = Depends(verify_api_key)):
 
         stations_list = []
         now = datetime.now(timezone.utc)
-
         for row in rows:
-            status = "offline"
-            last_update_str = None
-            if row['data_time']:
-                last_update_utc = row['data_time'].replace(tzinfo=timezone.utc)
-                last_update_str = last_update_utc.strftime("%Y-%m-%dT%H:%M:%SZ")
-                if (now - last_update_utc).total_seconds() < 900:
-                    status = "online"
-
-            stations_list.append({
-                "station_mn": row['station_mn'],
-                "friendly_name": row['station_name'], 
-                "location": {
-                    "latitude": row['latitude'],
-                    "longitude": row['longitude']
-                },
-                "status": status,
-                "last_update": last_update_str,
-                "weather": {
-                    "temperature": row['temperature'],
-                    "humidity": row['humidity'],
-                    "pressure": row['air_pressure']
-                },
-                "pollutants": {
-                    "pm2_5": row['pm25'],
-                    "pm10": row['pm10'],
-                    "co": row['carbon_monoxide'],
-                    "co2": None, 
-                    "so2": row['sulfur_dioxide'],
-                    "no2": row['nitrogen_dioxide'],
-                    "o3": row['ozone'],
-                    "pb": row['lead'],
-                    "pb_temp": row['lead_temperature']
-                }
-            })
+            stations_list.append(map_station_row_to_json(row, now))
 
         return {
-            "timestamp": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "timestamp": format_api_datetime(now),
             "total_stations": len(stations_list),
             "stations": stations_list
         }
@@ -491,46 +507,177 @@ def get_latest_data(api_key: str = Depends(verify_api_key)):
     finally:
         release_connection(conn)
 
+# 2. LIVE LATEST: SPECIFIC STATION (NEW FEATURE #1)
+@app.get("/api/v1/stations/{station_mn}/latest", tags=["Live Monitoring"])
+def get_specific_station_latest(station_mn: str, api_key: str = Depends(verify_api_key)):
+    """Fetches the absolute latest sensor packet recorded for a single specific station MN string."""
+    conn = get_connection()
+    try:
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        query = """
+            SELECT st.station_mn, st.station_name, st.latitude, st.longitude, s.data_time,
+                   s.temperature, s.humidity, s.air_pressure, 
+                   s.pm25, s.pm10, s.carbon_monoxide, s.sulfur_dioxide, 
+                   s.nitrogen_dioxide, s.ozone, s.lead, s.lead_temperature
+            FROM stations st
+            LEFT JOIN sensor_data s ON st.station_mn = s.station_mn
+            WHERE st.station_mn = %s
+            ORDER BY s.data_time DESC NULLS LAST LIMIT 1;
+        """
+        cur.execute(query, (station_mn,))
+        row = cur.fetchone()
+        
+        if not row:
+            raise HTTPException(status_code=404, detail="Station Identifier not found in database records.")
+            
+        now = datetime.now(timezone.utc)
+        return {
+            "timestamp": format_api_datetime(now),
+            "station": map_station_row_to_json(row, now)
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"API Error fetching single station profile: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+    finally:
+        release_connection(conn)
+
+# 3. ANALYTICS: 1 DAY AVERAGE (NEW FEATURE #2)
+@app.get("/api/v1/stations/analytics/1d", tags=["Historical Analytics"])
+def get_past_day_averages(api_key: str = Depends(verify_api_key)):
+    """Returns a single compiled object per station capturing mathematical sensor averages over the trailing 24 hours."""
+    conn = get_connection()
+    try:
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        query = """
+            SELECT st.station_mn, st.station_name, st.latitude, st.longitude,
+                   ROUND(AVG(s.temperature)::numeric, 2) as temperature,
+                   ROUND(AVG(s.humidity)::numeric, 2) as humidity,
+                   ROUND(AVG(s.air_pressure)::numeric, 2) as air_pressure,
+                   ROUND(AVG(s.pm25)::numeric, 2) as pm25,
+                   ROUND(AVG(s.pm10)::numeric, 2) as pm10,
+                   ROUND(AVG(s.carbon_monoxide)::numeric, 2) as carbon_monoxide,
+                   ROUND(AVG(s.sulfur_dioxide)::numeric, 2) as sulfur_dioxide,
+                   ROUND(AVG(s.nitrogen_dioxide)::numeric, 2) as nitrogen_dioxide,
+                   ROUND(AVG(s.ozone)::numeric, 2) as ozone,
+                   ROUND(AVG(s.lead)::numeric, 2) as lead,
+                   ROUND(AVG(s.lead_temperature)::numeric, 2) as lead_temperature
+            FROM stations st
+            JOIN sensor_data s ON st.station_mn = s.station_mn
+            WHERE s.data_time >= NOW() - INTERVAL '1 day'
+            GROUP BY st.station_mn, st.station_name, st.latitude, st.longitude
+            ORDER BY st.station_mn;
+        """
+        cur.execute(query)
+        return {
+            "range": "24_hours_aggregated_average",
+            "timestamp": format_api_datetime(datetime.now(timezone.utc)),
+            "results": cur.fetchall()
+        }
+    except Exception as e:
+        logger.error(f"1-Day Analytics Failure: {e}")
+        raise HTTPException(status_code=500, detail="Internal Analytical Server Error")
+    finally:
+        release_connection(conn)
+
+# 4. ANALYTICS: 7 DAY DAILY TIME-SERIES AVERAGES (NEW FEATURE #3)
+@app.get("/api/v1/stations/analytics/7d", tags=["Historical Analytics"])
+def get_past_week_daily_averages(api_key: str = Depends(verify_api_key)):
+    """Returns a rolling chronological daily time-series array mapping localized sensor step averages across the trailing 7 days."""
+    conn = get_connection()
+    try:
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        query = """
+            SELECT st.station_mn, st.station_name,
+                   DATE_TRUNC('day', s.data_time) as summary_date,
+                   ROUND(AVG(s.temperature)::numeric, 2) as temperature,
+                   ROUND(AVG(s.humidity)::numeric, 2) as humidity,
+                   ROUND(AVG(s.air_pressure)::numeric, 2) as air_pressure,
+                   ROUND(AVG(s.pm25)::numeric, 2) as pm25,
+                   ROUND(AVG(s.pm10)::numeric, 2) as pm10,
+                   ROUND(AVG(s.carbon_monoxide)::numeric, 2) as carbon_monoxide,
+                   ROUND(AVG(s.sulfur_dioxide)::numeric, 2) as sulfur_dioxide,
+                   ROUND(AVG(s.nitrogen_dioxide)::numeric, 2) as nitrogen_dioxide,
+                   ROUND(AVG(s.ozone)::numeric, 2) as ozone,
+                   ROUND(AVG(s.lead)::numeric, 2) as lead,
+                   ROUND(AVG(s.lead_temperature)::numeric, 2) as lead_temperature
+            FROM stations st
+            JOIN sensor_data s ON st.station_mn = s.station_mn
+            WHERE s.data_time >= NOW() - INTERVAL '7 days'
+            GROUP BY st.station_mn, st.station_name, summary_date
+            ORDER BY st.station_mn, summary_date DESC;
+        """
+        cur.execute(query)
+        rows = cur.fetchall()
+        for r in rows:
+            if r['summary_date']:
+                r['summary_date'] = r['summary_date'].strftime("%Y-%m-%d")
+        return {"range": "7_days_daily_averages", "results": rows}
+    except Exception as e:
+        logger.error(f"7-Day Analytics Failure: {e}")
+        raise HTTPException(status_code=500, detail="Internal Analytical Server Error")
+    finally:
+        release_connection(conn)
+
+# 5. ANALYTICS: 30 DAY DAILY TIME-SERIES AVERAGES (NEW FEATURE #4)
+@app.get("/api/v1/stations/analytics/30d", tags=["Historical Analytics"])
+def get_past_month_daily_averages(api_key: str = Depends(verify_api_key)):
+    """Returns a complete time-series dashboard payload averaging device sensor values by day over the trailing 30 days."""
+    conn = get_connection()
+    try:
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        query = """
+            SELECT st.station_mn, st.station_name,
+                   DATE_TRUNC('day', s.data_time) as summary_date,
+                   ROUND(AVG(s.temperature)::numeric, 2) as temperature,
+                   ROUND(AVG(s.humidity)::numeric, 2) as humidity,
+                   ROUND(AVG(s.air_pressure)::numeric, 2) as air_pressure,
+                   ROUND(AVG(s.pm25)::numeric, 2) as pm25,
+                   ROUND(AVG(s.pm10)::numeric, 2) as pm10,
+                   ROUND(AVG(s.carbon_monoxide)::numeric, 2) as carbon_monoxide,
+                   ROUND(AVG(s.sulfur_dioxide)::numeric, 2) as sulfur_dioxide,
+                   ROUND(AVG(s.nitrogen_dioxide)::numeric, 2) as nitrogen_dioxide,
+                   ROUND(AVG(s.ozone)::numeric, 2) as ozone,
+                   ROUND(AVG(s.lead)::numeric, 2) as lead,
+                   ROUND(AVG(s.lead_temperature)::numeric, 2) as lead_temperature
+            FROM stations st
+            JOIN sensor_data s ON st.station_mn = s.station_mn
+            WHERE s.data_time >= NOW() - INTERVAL '30 days'
+            GROUP BY st.station_mn, st.station_name, summary_date
+            ORDER BY st.station_mn, summary_date DESC;
+        """
+        cur.execute(query)
+        rows = cur.fetchall()
+        for r in rows:
+            if r['summary_date']:
+                r['summary_date'] = r['summary_date'].strftime("%Y-%m-%d")
+        return {"range": "30_days_daily_averages", "results": rows}
+    except Exception as e:
+        logger.error(f"30-Day Analytics Failure: {e}")
+        raise HTTPException(status_code=500, detail="Internal Analytical Server Error")
+    finally:
+        release_connection(conn)
+
+# 6. MANAGEMENT: INDEX ALL REGISTERED STATIONS
 @app.get("/api/v1/stations", tags=["Station Infrastructure"])
 def list_stations(api_key: str = Depends(verify_api_key)):
     conn = get_connection()
     try:
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute("SELECT station_mn, station_name, latitude, longitude, updated_at FROM stations ORDER BY station_mn;")
-        return {"total_registered": cur.rowcount, "stations": cur.fetchall()}
+        rows = cur.fetchall()
+        for r in rows:
+            if r['updated_at']:
+                r['updated_at'] = format_api_datetime(r['updated_at'])
+        return {"total_registered": len(rows), "stations": rows}
     except Exception as e:
         logger.error(f"API Stations Fetch Error: {e}")
         raise HTTPException(status_code=500, detail="Internal Database Error")
     finally:
         release_connection(conn)
 
-@app.get("/api/v1/stations/{station_mn}/history", tags=["Live Monitoring"])
-def get_station_history(station_mn: str, limit: int = 100, api_key: str = Depends(verify_api_key)):
-    conn = get_connection()
-    try:
-        cur = conn.cursor(cursor_factory=RealDictCursor)
-        query = """
-            SELECT data_time, ip_address, pm25, pm10, tsp, ozone, carbon_monoxide, 
-                   sulfur_dioxide, nitrogen_dioxide, temperature, humidity, air_pressure, 
-                   lead, lead_temperature 
-            FROM sensor_data 
-            WHERE station_mn = %s 
-            ORDER BY data_time DESC NULLS LAST 
-            LIMIT %s;
-        """
-        cur.execute(query, (station_mn, limit))
-        records = cur.fetchall()
-        return {
-            "station_mn": station_mn,
-            "records_returned": len(records),
-            "history": records
-        }
-    except Exception as e:
-        logger.error(f"API History Fetch Error for {station_mn}: {e}")
-        raise HTTPException(status_code=500, detail="Internal Query Log Error")
-    finally:
-        release_connection(conn)
-
+# 7. DIAGNOSTICS: RUNTIME HEALTH METRICS
 @app.get("/api/v1/system/status", tags=["Station Infrastructure"])
 def system_health_check():
     pool_available = "Error"
@@ -539,7 +686,7 @@ def system_health_check():
     
     return {
         "status": "operational",
-        "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "timestamp": format_api_datetime(datetime.now(timezone.utc)),
         "subsystems": {
             "tcp_ingestion_server": "running",
             "modbus_polling_client": "active",

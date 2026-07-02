@@ -106,3 +106,74 @@
 2026-07-02 07:55:08,055 [ERROR] Thread-1 (handle_client): Error inserting sensor data: name 'timedelta' is not defined
 2026-07-02 07:56:01,677 [INFO] MainThread: API Server starting on 0.0.0.0:8000
 2026-07-02 07:56:01,678 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 08:00:59,648 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-02 08:00:59,648 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 08:26:38,852 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-02 08:26:38,852 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 08:30:02,716 [INFO] MainThread: API Server starting on 0.0.0.0:8000
+2026-07-02 08:30:02,716 [INFO] TCP-Main: TCP Server running on 0.0.0.0:1935
+2026-07-02 11:48:07,343 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:48:52,353 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:49:37,371 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:50:22,391 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:51:07,402 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:51:52,427 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:52:37,435 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:53:22,442 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:54:07,451 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:54:52,461 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:55:37,470 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:56:22,489 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:57:07,499 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:57:52,509 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:58:37,519 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 11:59:22,528 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:00:07,549 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:00:52,560 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:01:37,574 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:02:22,593 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:03:07,614 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:03:52,622 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:04:37,629 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:05:22,634 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:06:07,652 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:06:52,672 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:07:37,691 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:08:22,699 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:09:07,708 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:09:52,721 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:10:37,730 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:11:22,739 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:12:07,757 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:12:52,764 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:13:37,782 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:14:22,790 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:15:07,802 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:15:52,821 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:16:37,830 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:17:22,852 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:18:07,859 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:18:52,878 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:19:37,896 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:20:22,918 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:21:07,926 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:21:52,943 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:22:37,962 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:23:22,981 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:24:07,991 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:24:53,003 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:25:38,012 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:26:23,033 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:27:08,041 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:27:53,061 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:28:38,070 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:29:23,078 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:30:08,087 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 12:30:53,106 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 13:05:14,504 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 13:05:59,523 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 13:06:44,530 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 13:07:29,539 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 13:08:14,547 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 13:08:59,555 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
+2026-07-02 18:20:48,942 [ERROR] ModbusLeadService: [MODBUS] IP 192.168.55.11: [WinError 10054] An existing connection was forcibly closed by the remote host
